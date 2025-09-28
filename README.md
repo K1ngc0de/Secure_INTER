@@ -23,20 +23,20 @@ This repository contains both the monolithic implementation (`asana_data_extract
 
 ### Part 1 — API Research & Endpoint Mapping
 - **Documentation**: `asana-security-checks/docs/API_MAPPING.md`
-- **Status**: ✅ Complete
+- **Status**:  Complete
 - **Description**: Comprehensive mapping of Asana REST API endpoints to security checks
 
 ### Part 2 — Data Fetcher
 - **Implementation**: `asana-security-checks/src/fetcher/`
 - **Runner**: `fetch_consolidated.py`
 - **Output**: `asana-security-checks/data/consolidated.json`
-- **Status**: ✅ Complete
+- **Status**:  Complete
 
 ### Part 3 — JSONata Security Checks
 - **Implementation**: `asana-security-checks/src/checks/`
 - **Runner**: `run_checks.py`
 - **Output**: `asana-security-checks/data/checks_result.json`
-- **Status**: ✅ Complete
+- **Status**:  Complete
 
 ## Setup
 
