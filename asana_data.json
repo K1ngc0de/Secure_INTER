@@ -1,0 +1,47 @@
+{
+  "workspace": {
+    "gid": "1211487110823678",
+    "resource_type": "workspace",
+    "name": "My workspace"
+  },
+  "users": {
+    "admins": [],
+    "external_users": [
+      {
+        "gid": "1211487110823666",
+        "name": "Vadim Advahov",
+        "resource_type": "user"
+      },
+      {
+        "gid": "1211487111272383",
+        "name": "vadim.advahov@isa.utm.md",
+        "resource_type": "user"
+      }
+    ]
+  },
+  "projects": [
+    {
+      "gid": "1211486774855874",
+      "archived": false,
+      "color": "aqua",
+      "created_at": "2025-09-28T07:09:53.773Z",
+      "modified_at": "2025-09-28T07:09:54.551Z",
+      "name": "Vadim's first project",
+      "notes": "",
+      "owner": {
+        "gid": "1211487110823666",
+        "resource_type": "user"
+      },
+      "permalink_url": "https://app.asana.com/1/1211487110823678/project/1211486774855874",
+      "public": false,
+      "team": {
+        "gid": "1211487110823680",
+        "resource_type": "team"
+      }
+    }
+  ],
+  "extracted_at": "2025-09-28T10:42:54.992597",
+  "total_admins": 0,
+  "total_external_users": 2,
+  "total_projects": 1
+}
