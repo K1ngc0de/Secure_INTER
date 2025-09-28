@@ -1,0 +1,18 @@
+{
+  "admin_count_check": {
+    "description": "No more than 4 Admins Configured",
+    "result": {}
+  },
+  "inactive_projects_check": {
+    "description": "No Inactive Projects Present (365+ days, not archived)",
+    "result": {
+      "inactive_projects": {}
+    }
+  },
+  "external_users_check": {
+    "description": "No Active External Users",
+    "result": {
+      "external_users": {}
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "admin_count_check": {
+    "description": "No more than 4 Admins Configured",
+    "expr": "$string({\"admin_count\": users[is_admin = true].$count(), \"is_violation\": users[is_admin = true].$count() > 4})"
+  },
+  "inactive_projects_check": {
+    "description": "No Inactive Projects Present (365+ days, not archived)",
+    "expr": "$string({\"inactive_projects\": projects[archived = false and ($toMillis($now()) - $toMillis(modified_at)) > 365*24*60*60*1000]{\"gid\": gid, \"name\": name, \"modified_at\": modified_at}, \"inactive_count\": projects[archived = false and ($toMillis($now()) - $toMillis(modified_at)) > 365*24*60*60*1000].$count(), \"is_violation\": projects[archived = false and ($toMillis($now()) - $toMillis(modified_at)) > 365*24*60*60*1000].$count() > 0})"
+  },
+  "external_users_check": {
+    "description": "No Active External Users",
+    "expr": "$string({\"external_users\": users[is_admin != true]{\"gid\": gid, \"name\": name, \"email\": email}, \"external_count\": users[is_admin != true].$count(), \"is_violation\": users[is_admin != true].$count() > 0})"
+  }
+}
