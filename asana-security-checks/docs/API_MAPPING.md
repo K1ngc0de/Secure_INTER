@@ -2,6 +2,8 @@
 
 This document maps the Asana REST API endpoints to the three Security Checks implemented in this assignment, and outlines the evaluation logic for each check.
 
+> **Note**: This mapping reflects the actual implementation in `asana_data_extractor.py` and serves as the foundation for the modular `asana-security-checks` project structure.
+
 ## Security Checks Overview
 
 The three security checks to be implemented are:
@@ -138,6 +140,37 @@ Before running checks, we need the target workspace GID. We can obtain workspace
 
 The same mapping applies whether checks are implemented in Python or later via JSONata over a consolidated JSON file.
 
+## Implementation Reference
+
+This API mapping is implemented in the existing `asana_data_extractor.py` script with the following methods:
+
+### API Endpoints → Implementation Methods
+```
+/workspaces                    → get_workspaces()
+/workspaces/{gid}/users        → get_workspace_users()
+/projects?workspace={gid}      → get_workspace_projects()
+```
+
+### Security Checks → Implementation Methods
+```
+Check 1: Admin Count           → check_admin_count()
+Check 2: Inactive Projects     → check_inactive_projects()
+Check 3: External Users        → check_active_external_users()
+```
+
+### Data Flow in Current Implementation
+```
+1. AsanaDataExtractor.__init__()     # Initialize with PAT
+2. get_workspaces()                  # Get workspace list
+3. get_workspace_users()             # Get users (admins + external)
+4. get_workspace_projects()          # Get projects with metadata
+5. run_security_checks()             # Run all 3 checks
+6. print_security_report()           # Display results
+7. save_to_json()                    # Save to asana_data.json
+```
+
+The modular `asana-security-checks` project will refactor this implementation into separate modules while maintaining the same API mapping and evaluation logic.
+
 ## Example API Response Structure
 
 ```json
@@ -157,5 +190,20 @@ The same mapping applies whether checks are implemented in Python or later via J
   ]
 }
 ```
+
+## Actual Implementation Details
+
+### Current Implementation Status
+- **API Client**: Implemented in `AsanaDataExtractor` class
+- **Data Fetching**: All three endpoints implemented
+- **Security Checks**: All three checks implemented and tested
+- **Error Handling**: Basic error handling with try/catch
+- **Output Format**: JSON output with detailed check results
+
+### Next Steps (Part 2 & 3)
+- **Modular Refactoring**: Split into `src/api/`, `src/fetcher/`, `src/checks/`
+- **Consolidated JSON**: Create `data/consolidated.json` output
+- **JSONata Integration**: Implement policy checks using JSONata expressions
+- **CLI Interface**: Add command-line interface for fetch and check operations
 
 
