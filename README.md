@@ -1,6 +1,11 @@
-# Asana Data Extractor
+# Asana Security Checks
 
-Python-скрипт для извлечения данных из Asana API с использованием Personal Access Token.
+Complete implementation of Asana security checks assignment with three parts:
+1. **Part 1**: API Research & Endpoint Mapping
+2. **Part 2**: Data Fetcher (consolidated JSON)
+3. **Part 3**: JSONata Security Checks
+
+This repository contains both the original monolithic implementation (`asana_data_extractor.py`) and the new modular implementation (`asana-security-checks/`).
 
 ## Возможности
 
@@ -14,31 +19,161 @@ Python-скрипт для извлечения данных из Asana API с �
   - Проверка активных внешних пользователей
 - Генерация отчета по безопасности
 
-## Установка
+## Assignment Parts
 
-1. Установите зависимости:
+### Part 1 — API Research & Endpoint Mapping
+- **Documentation**: `asana-security-checks/docs/API_MAPPING.md`
+- **Status**: ✅ Complete
+- **Description**: Comprehensive mapping of Asana REST API endpoints to security checks
+
+### Part 2 — Data Fetcher
+- **Implementation**: `asana-security-checks/src/fetcher/`
+- **Runner**: `fetch_consolidated.py`
+- **Output**: `asana-security-checks/data/consolidated.json`
+- **Status**: ✅ Complete
+
+### Part 3 — JSONata Security Checks
+- **Implementation**: `asana-security-checks/src/checks/`
+- **Runner**: `run_checks.py`
+- **Output**: `asana-security-checks/data/checks_result.json`
+- **Status**: ✅ Complete
+
+## Setup
+
+1. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Создайте файл `token.txt` и поместите в него ваш Personal Access Token от Asana
-   - ⚠️ **Важно**: Файл `token.txt` уже добавлен в `.gitignore` для безопасности
+2. Set up authentication:
+   - Option A: Set environment variable `ASANA_PAT=your_token_here`
+   - Option B: Create `token.txt` file with your Personal Access Token
+   - ⚠️ **Security**: `token.txt` is already in `.gitignore`
 
-## Использование
+## Usage
 
-Запустите скрипт:
+### Original Implementation (Monolithic)
 ```bash
-python asana_data_extractor.py
+python3 asana_data_extractor.py
 ```
 
-Скрипт автоматически:
-1. Прочитает токен из файла `token.txt`
-2. Получит список workspace
-3. Извлечет пользователей и проекты из первого workspace
-4. Сохранит все данные в файл `asana_data.json`
-5. Выполнит проверки безопасности
-6. Создаст отчет по безопасности
-7. Сохранит данные с результатами проверок в `asana_data_with_security.json`
+### New Modular Implementation
+
+#### Part 2: Fetch Data
+```bash
+python3 fetch_consolidated.py
+```
+- Output: `asana-security-checks/data/consolidated.json`
+
+#### Part 3: Run Security Checks
+```bash
+python3 run_checks.py
+```
+- Output: `asana-security-checks/data/checks_result.json`
+
+### Both Steps Together
+```bash
+python3 fetch_consolidated.py && python3 run_checks.py
+```
+
+## Results from Single Run
+
+### Part 2 Output (consolidated.json)
+```json
+{
+  "workspace": {
+    "gid": "1211487110823678",
+    "resource_type": "workspace",
+    "name": "My workspace"
+  },
+  "users": [
+    {
+      "gid": "1211487110823666",
+      "email": "advahov22vadim@gmail.com",
+      "name": "Vadim Advahov",
+      "resource_type": "user"
+    },
+    {
+      "gid": "1211487111272383",
+      "email": "vadim.advahov@isa.utm.md",
+      "name": "vadim.advahov@isa.utm.md",
+      "resource_type": "user"
+    }
+  ],
+  "projects": [
+    {
+      "gid": "1211486774855874",
+      "archived": false,
+      "color": "aqua",
+      "created_at": "2025-09-28T07:09:53.773Z",
+      "modified_at": "2025-09-28T07:09:54.551Z",
+      "name": "Vadim's first project",
+      "notes": "",
+      "owner": {
+        "gid": "1211487110823666",
+        "resource_type": "user"
+      },
+      "permalink_url": "https://app.asana.com/1/1211487110823678/project/1211486774855874",
+      "public": false,
+      "team": {
+        "gid": "1211487110823680",
+        "resource_type": "team"
+      }
+    }
+  ],
+  "extracted_at": "2025-09-28T11:24:36.151912"
+}
+```
+
+### Part 3 Output (checks_result.json)
+```json
+{
+  "admin_count_check": {
+    "description": "No more than 4 Admins Configured",
+    "result": {
+      "admin_count": 0,
+      "is_violation": false
+    }
+  },
+  "inactive_projects_check": {
+    "description": "No Inactive Projects Present (365+ days, not archived)",
+    "result": {
+      "inactive_projects": [],
+      "inactive_count": 0,
+      "is_violation": false
+    }
+  },
+  "external_users_check": {
+    "description": "No Active External Users",
+    "result": {
+      "external_users": [
+        {
+          "gid": "1211487110823666",
+          "name": "Vadim Advahov",
+          "email": "advahov22vadim@gmail.com"
+        },
+        {
+          "gid": "1211487111272383",
+          "name": "vadim.advahov@isa.utm.md",
+          "email": "vadim.advahov@isa.utm.md"
+        }
+      ],
+      "external_count": 2,
+      "is_violation": true
+    }
+  }
+}
+```
+
+### Security Check Summary
+- ✅ **Admin Count**: 0 admins (PASS - within limit of 4)
+- ✅ **Inactive Projects**: 0 inactive projects (PASS - no projects older than 365 days)
+- ❌ **External Users**: 2 external users (VIOLATION - external users detected)
+
+## Documentation
+
+- **Implementation Details**: See `IMPLEMENTATION.md` for detailed explanation of each part
+- **API Mapping**: See `asana-security-checks/docs/API_MAPPING.md` for Part 1 documentation
 
 ## Структура выходного JSON
 
