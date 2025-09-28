@@ -22,6 +22,7 @@ pip install -r requirements.txt
 ```
 
 2. Создайте файл `token.txt` и поместите в него ваш Personal Access Token от Asana
+   - ⚠️ **Важно**: Файл `token.txt` уже добавлен в `.gitignore` для безопасности
 
 ## Использование
 
