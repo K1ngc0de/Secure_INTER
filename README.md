@@ -5,19 +5,19 @@ Complete implementation of Asana security checks assignment with three parts:
 2. **Part 2**: Data Fetcher (consolidated JSON)
 3. **Part 3**: JSONata Security Checks
 
-This repository contains both the original monolithic implementation (`asana_data_extractor.py`) and the new modular implementation (`asana-security-checks/`).
+This repository contains both the monolithic implementation (`asana_data_extractor.py`) and the modular implementation (`asana-security-checks/`).
 
-## Возможности
+## Features
 
-- Получение списка пользователей workspace (администраторы и внешние пользователи)
-- Получение списка проектов с полями `archived` и `modified_at`
-- Объединение всех данных в один JSON файл
-- Детальная статистика извлеченных данных
-- **Проверки безопасности:**
-  - Проверка количества администраторов (не более 4)
-  - Проверка неактивных проектов (не изменялись более 365 дней)
-  - Проверка активных внешних пользователей
-- Генерация отчета по безопасности
+- Fetch workspace users (admins and external users)
+- Fetch projects with `archived` and `modified_at` fields
+- Consolidate all data into a single JSON
+- Detailed extraction statistics
+- **Security checks:**
+  - Admin count check (no more than 4)
+  - Inactive projects check (> 365 days and not archived)
+  - Active external users check
+- Generate a security report
 
 ## Assignment Parts
 
@@ -48,7 +48,7 @@ pip install -r requirements.txt
 2. Set up authentication:
    - Option A: Set environment variable `ASANA_PAT=your_token_here`
    - Option B: Create `token.txt` file with your Personal Access Token
-   - ⚠️ **Security**: `token.txt` is already in `.gitignore`
+   -  **Security**: `token.txt` is already in `.gitignore`
 
 ## Usage
 
@@ -166,16 +166,16 @@ python3 fetch_consolidated.py && python3 run_checks.py
 ```
 
 ### Security Check Summary
-- ✅ **Admin Count**: 0 admins (PASS - within limit of 4)
-- ✅ **Inactive Projects**: 0 inactive projects (PASS - no projects older than 365 days)
-- ❌ **External Users**: 2 external users (VIOLATION - external users detected)
+- Admin Count: 0 admins (PASS - within limit of 4)
+- Inactive Projects: 0 inactive projects (PASS - no projects older than 365 days)
+- External Users: 2 external users (VIOLATION - external users detected)
 
 ## Documentation
 
 - **Implementation Details**: See `IMPLEMENTATION.md` for detailed explanation of each part
 - **API Mapping**: See `asana-security-checks/docs/API_MAPPING.md` for Part 1 documentation
 
-## Структура выходного JSON
+## Output JSON Structure
 
 ```json
 {
@@ -206,35 +206,35 @@ python3 fetch_consolidated.py && python3 run_checks.py
 }
 ```
 
-## Получение Personal Access Token
+## Obtaining a Personal Access Token
 
-1. Войдите в Asana
-2. Перейдите в настройки профиля
-3. Выберите "Apps" → "Personal Access Tokens"
-4. Создайте новый токен
-5. Скопируйте токен в файл `token.txt`
+1. Sign in to Asana
+2. Open Profile Settings
+3. Go to "Apps" → "Personal Access Tokens"
+4. Create a new token
+5. Copy the token into `token.txt`
 
-## Проверки безопасности
+## Security Checks
 
-Скрипт выполняет три основные проверки безопасности:
+The project performs three security checks:
 
-### 1. Проверка количества администраторов
-- **Цель**: Не более 4 администраторов в workspace
-- **Статус**: ✅ PASS / ❌ VIOLATION
-- **Детали**: Показывает текущее количество администраторов
+### 1. Admin Count Check
+- Goal: No more than 4 administrators in the workspace
+- Status: PASS / VIOLATION
+- Details: Shows the current number of admins
 
-### 2. Проверка неактивных проектов
-- **Цель**: Отсутствие проектов, не изменявшихся более 365 дней
-- **Статус**: ✅ PASS / ❌ VIOLATION
-- **Детали**: Список неактивных проектов с количеством дней без изменений
+### 2. Inactive Projects Check
+- Goal: No projects unchanged for more than 365 days
+- Status: PASS / VIOLATION
+- Details: Lists inactive projects with number of days inactive
 
-### 3. Проверка внешних пользователей
-- **Цель**: Отсутствие активных внешних (гостевых) пользователей
-- **Статус**: ✅ PASS / ❌ VIOLATION
-- **Детали**: Список всех внешних пользователей с доступом к данным
+### 3. External Users Check
+- Goal: No active external (guest) users
+- Status: PASS / VIOLATION
+- Details: Lists all external users with access to data
 
-## Требования
+## Requirements
 
 - Python 3.6+
-- Personal Access Token от Asana
-- Доступ к интернету для API запросов
+- Asana Personal Access Token
+- Internet access for API requests
